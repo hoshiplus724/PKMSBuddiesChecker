@@ -3,6 +3,7 @@
 // バディーズをトグル（アクティブ/非アクティブを切り替え）
 function toggleBuddy(buddy) {
 buddy.classList.toggle("active");
+saveCookie(getEncodedStr());
 }
 
 // 昇順と降順を入れ替える
