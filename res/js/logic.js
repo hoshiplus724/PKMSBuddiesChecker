@@ -82,21 +82,7 @@ function addCharacterForm(characterId, skilllevel, rarity, exRole) {
 
 // URL生成関数
 function generateUrl() {
-  let encodedCharacters = '';
-  Object.keys(characterDefaults).forEach(characterId => {
-   let skilllevel;
-   if(document.getElementById(`has-character-${characterId}`).classList.contains('active')){
-      skilllevel = 1
-    }
-    else{
-      skilllevel = 0
-    };
-    //todo とりあえず仮置き
-    const rarity = 2;
-    const exRole = 0;
-    encodedCharacters += encodeCharacter(skilllevel, rarity, exRole);
-  });
-  const EncodedStr = huffmanEncodeWithTree(encodedCharacters)
+  const EncodedStr = getEncodedStr()
   const baseUrl = window.location.origin + window.location.pathname;
   const query = `?data=${EncodedStr}`;
   const fullUrl = baseUrl + query;
@@ -106,13 +92,36 @@ function generateUrl() {
   document.getElementById('copy-url-btn').style.display = 'inline-block';
 }
 
+// 画面情報の取得・暗号化
+function getEncodedStr(){
+  let encodedCharacters = ``;
+  Object.keys(characterDefaults).forEach(characterId => {
+    let skilllevel;
+    if(document.getElementById(`has-character-${characterId}`).classList.contains('active')){
+       skilllevel = 1
+     }
+     else{
+       skilllevel = 0
+     };
+     //todo とりあえず仮置き
+     const rarity = 2;
+     const exRole = 0;
+     encodedCharacters += encodeCharacter(skilllevel, rarity, exRole);
+   });
+  return huffmanEncodeWithTree(encodedCharacters);
+}
+
 // クエリパラメータからデータを取得して表示する関数
 async function displayCharacterInfoFromQuery() {
   await loadCharacterDefaults(); // CSVデータを読み込み
 
   const params = new URLSearchParams(window.location.search);
 
-  const huffmanData = params.get('data');
+  let huffmanData = params.get('data');
+  // キャッシュがあればhuffmanDataに入れる
+  if(!huffmanData){
+    huffmanData = loadCookie()
+  }
   const data = (huffmanData != null) ? huffmanDecodeWithTree(huffmanData) : null
 
   const formContainer = document.getElementById('character-forms');
