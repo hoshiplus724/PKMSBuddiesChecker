@@ -29,10 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get current date and time
-        id: current-time
-        env:
-          TZ: 'Asia/Tokyo' # タイムゾーン指定
-        run: echo "CURRENT_TIME=$(date -u +"%Y-%m-%d %H:%M:%S JST")" >> $GITHUB_ENV
+        run: echo "CURRENT_TIME=$(TZ=Asia/Tokyo date -u +"%Y-%m-%d %H:%M:%S JST")" >> $GITHUB_ENV
       - name: Insert last run time into existing HTML
         run: |
           sed -i 's|<!-- LAST_DEPLOYMENT_TIME -->|<p>${{ env.CURRENT_TIME }}</p>|' index.html
