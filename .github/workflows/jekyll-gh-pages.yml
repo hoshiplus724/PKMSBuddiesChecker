@@ -29,10 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get current date and time
-        run: echo "CURRENT_TIME=$(TZ=Asia/Tokyo date +"%Y-%m-%d %H:%M:%S JST")" >> $GITHUB_ENV
+        run: echo "CURRENT_TIME=$(TZ=Asia/Tokyo date +"%Y/%m/%d %H:%M:%S JST")" >> $GITHUB_ENV
       - name: Insert last run time into existing HTML
         run: |
-          sed -i 's|<!-- LAST_DEPLOYMENT_TIME -->|<p>${{ env.CURRENT_TIME }}</p>|' index.html
+          sed -i 's|<!-- LAST_DEPLOYMENT_TIME -->|${{ env.CURRENT_TIME }}|' index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll
