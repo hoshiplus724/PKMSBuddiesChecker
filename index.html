@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>バディーズチェッカー</title>
+  <link rel="stylesheet" href="res/css/style.css" type="text/css">
+  <script src="res/js/cookie.js"></script>
+  <script src="res/js/logic.js"></script>
+  <script src="res/js/huffman.js"></script>
+  <script src="res/js/UI.js"></script>
+</head>
+<body>
+
+  <!-- キャラクター情報を表示 -->
+  <div class="container">
+      <div class="header">
+          <div class="title">
+              <span class="title-text">バディーズチェッカー</span>
+          </div>
+      </div>
+      <div id="character-forms" class="list">
+      </div>
+      <div class="search-filter">
+        <div class="view-options">
+            <select class="dropdown">
+                <option>実装日</option>
+            </select>
+            <button id="order-button" onclick="changeOrderAsc(this)">昇順</button>
+        </div>
+        <div class="view-options">
+          <button class="filter-button" onclick="openFilterWindow()">フィルター</button>
+        </div>
+      </div>
+      <div class="url-generation">
+        <button type="button" class="url-button" onclick="generateUrl()">URLで共有する</button>
+        <p id="generated-url"></p>
+        <button id="copy-url-btn" class="url-copy-button" onclick="copyUrl()">URLをコピー</button>
+      </div>
+
+      <div id="filter-window" class="filter-window">
+        <div class="filter-background"></div>
+        <div class="filter-popup-content">
+            <div class="filter-container">
+              <div class="header">
+                フィルター
+              </div>
+              <div class="header-details">ロール</div>
+              <div class="filter-details">
+                <button id="role-attack" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/role/attack.png">
+                </button>
+                <button id="role-technical" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/role/technical.png">
+                </button>
+                <button id="role-support" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/role/support.png">
+                </button>
+                <button id="role-speed" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/role/speed.png">
+                </button>
+                <button id="role-field" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/role/field.png">
+                </button>
+                <button id="role-multi" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/role/multi.png">
+                </button>
+              </div>
+              <div class="header-details">タイプ</div>
+              <div class="filter-details">
+                <button id="type-normal" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/normal.png">
+                </button>
+                <button id="type-hono" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/hono.png">
+                </button>
+                <button id="type-mizu" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/mizu.png">
+                </button>
+                <button id="type-denki" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/denki.png">
+                </button>
+                <button id="type-kusa" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/kusa.png">
+                </button>
+                <button id="type-kori" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/kori.png">
+                </button>
+              </div>
+              <div class="filter-details">
+                <button id="type-kakutou" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/kakutou.png">
+                </button>
+                <button id="type-doku" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/doku.png">
+                </button>
+                <button id="type-jimen" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/jimen.png">
+                </button>
+                <button id="type-hikou" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/hikou.png">
+                </button>
+                <button id="type-esper" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/esper.png">
+                </button>
+                <button id="type-musi" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/musi.png">
+                </button>
+              </div>
+              <div class="filter-details">
+                <button id="type-iwa" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/iwa.png">
+                </button>
+                <button id="type-ghost" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/ghost.png">
+                </button>
+                <button id="type-dragon" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/dragon.png">
+                </button>
+                <button id="type-aku" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/aku.png">
+                </button>
+                <button id="type-hagane" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/hagane.png">
+                </button>
+                <button id="type-fairy" class="filter-item" onclick="toggleFilter(this)">
+                  <img class="img-filter-item" src="res/etc/type/fairy.png">
+                </button>
+              </div>
+              <div class="filter-search">
+                <button onclick="ClosefilterWindow()">閉じる</button>
+                <button onclick="resetFilter()">リセット</button>
+                <button onclick="applyFilters()">フィルター</button>
+              </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
+
